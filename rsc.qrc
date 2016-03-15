@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>stereograma.svg</file>
+        <file>open.png</file>
+        <file>opend.png</file>
+        <file>openobj.png</file>
+        <file>opent.png</file>
+        <file>save.png</file>
+        <file>exit.png</file>
+        <file>swap.png</file>
+    </qresource>
+</RCC>
