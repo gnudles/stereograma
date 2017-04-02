@@ -1,6 +1,5 @@
 language: cpp
 compiler:
- - clang
  - gcc
 dist: trusty
 sudo: required
@@ -10,8 +9,7 @@ matrix:
  include:
   - env: TARGET_OS=win32
   - env: TARGET_OS=win64
-  - env: TARGET_OS=linux
-  - env: QT5=True TARGET_OS=linux
+  - env: QT5=True
 install:
  - . ${TRAVIS_BUILD_DIR}/.travis/${TRAVIS_OS_NAME}.${TARGET_OS}.install.sh
 script:
