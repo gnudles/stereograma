@@ -13,9 +13,7 @@ matrix:
 install:
 - ". ${TRAVIS_BUILD_DIR}/.travis/${TRAVIS_OS_NAME}.${TARGET_OS}.install.sh"
 script:
-- qmake stereograma.pro
-- make -j4
-- tar -cvzf stereograma_${TARGET_OS}.tar.gz stereograma stereograma.exe
+- ". ${TRAVIS_BUILD_DIR}/.travis/${TRAVIS_OS_NAME}.${TARGET_OS}.build.sh"
 deploy:
   provider: releases
   api_key:
