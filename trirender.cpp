@@ -38,12 +38,6 @@ static void putPixel(long long  x,long long  y, long long  value)
 
 static void drawScanLine(long long  fromx, long long  tox,long long  fromc,long long  toc, long long  y)
 {
-    /*if (fromx==tox)
-    {
-        putPixel(tox,y, toc);
-        putPixel(tox,y, fromc);
-        return;
-    }*/
     long long  x,c=fromc;
     x=(fromx+int_scale-1);
     x=x-(x%int_scale);
@@ -189,7 +183,7 @@ static void drawTriangle(const Vertice* v1,const Vertice* v2,const Vertice* v3)
 
   }
 }
-static void drawTri(unsigned char *buffer, int w, int h,const long long *points,const unsigned int *triangles, int tri_ind)
+static void drawTri(/*unsigned char *buffer, int w, int h,*/const long long *points,const unsigned int *triangles, int tri_ind)
 {
     unsigned int t[3];
     for (int i=0;i<3;++i)
@@ -365,7 +359,7 @@ void trirender(unsigned char *buffer, int width, int height, const float *points
 
     for (int i=0;i<nt;++i)
     {
-        drawTri(buffer,width,height,i_points,triangles,i);
+        drawTri(/*buffer,width,height,*/i_points,triangles,i);
     }
     delete [] i_points;
 }
