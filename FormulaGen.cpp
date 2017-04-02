@@ -32,7 +32,7 @@ void FormulaGen::on_generatePb_clicked()
 {
 	int w=getOutputImageWidth();
 	int h=getOutputImageHeight();
-	QByteArray formula_ba=ui->formulaPText->toPlainText().toAscii();
+	QByteArray formula_ba=ui->formulaPText->toPlainText().toLatin1();
 	const char* formula_buf=formula_ba.constData();
 	imdata=QImage(w,h,QImage::Format_RGB32);
     
