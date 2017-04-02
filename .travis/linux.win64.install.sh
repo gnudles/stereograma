@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+sudo add-apt-repository ppa:tobydox/mingw-x-trusty -y
+sudo apt-get update -qq
+
 if [ "$QT5" ]; then
 	MINGW_PACKAGES="mingw64-x-qt5base"
 else

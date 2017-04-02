@@ -1,17 +1,25 @@
 language: cpp
 compiler:
- - gcc
+- gcc
 dist: trusty
 sudo: required
 os:
 - linux
 matrix:
- include:
+  include:
   - env: TARGET_OS=win32
   - env: TARGET_OS=win64
   - env: QT5=True
 install:
- - . ${TRAVIS_BUILD_DIR}/.travis/${TRAVIS_OS_NAME}.${TARGET_OS}.install.sh
+- ". ${TRAVIS_BUILD_DIR}/.travis/${TRAVIS_OS_NAME}.${TARGET_OS}.install.sh"
 script:
- - qmake stereograma.pro
- - make -j4
+- qmake stereograma.pro
+- make -j4
+- tar -cvzf stereograma_${TARGET_OS}.tar.gz stereograma stereograma.exe
+deploy:
+  provider: releases
+  api_key:
+    secure: AudqDWNaHAqU1rU/PNn2ONIqmObOduEiDBJLQRLtz26E30FbaTEjXk25huMpYUs/ncLCT230FFCTQPu/GJ1tKfEnBEYfUGDFhiNW50V74XAITzrHe5pJTSOd21is43wL7fgmdFpVJ1E7k6qjzxc16oxUBvCeW6HmnG9BeNI2uyzE2qv9e/jnNc8oz/6gcmVHdfOKxXcsnv8zPoGbdaCljs0WYFbVnB03x9iBgk77Vzbm9IyjOiSHuaL4Z0MfZt2sf2zVJoY/93lOLX1A0A2wQoJMoYK4MjH9cKMKe8+JIRROgNhl2P2HLr5sT2rpgLty5sj4f48xyHS4jfyeRUs//cph62N6HVZcc9Bjc786eJH+LaGCChjRjYi+mm7O5NGk8qx3AEZCzm9FRSqynetYqCjMCxZB0Mjaex3iA/xD4szLER8dqR/zfTgKFvWpsycVH7CSypW6RtMyYwlOKhRjB//eNNldHJ9FVGZ1LFECNg91LrlF8tyBaV0QUH3KcU2/RxdkNb6VmtcsG0CCZs2idshjme7aWnMwvX+sLaPCjWWuoux5QR3ULbAgKlYY1NnxklKNhABOWPFF9tO9bmY4an/8iEZ8QNgP8bWWQBFy0rJF8keEa1fLEo2OH9zLj1ZMDohP0+8HBTnuxPOHmAzOLr2FYuCV6dWOmJT2RL02neM=
+  file: stereograma
+  on:
+    repo: gnudles/stereograma
