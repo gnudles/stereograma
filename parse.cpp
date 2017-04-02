@@ -109,21 +109,7 @@ void skip_spaces(const char* buffer, int *offset)
         (*offset)++;
     }
 }
-void next_token(const char* buffer, int *offset)
-{
-	while (is_whitespace(buffer[*offset]))
-    {
-        (*offset)++;
-    }
-}
-int token_length(const char* buffer, int offset)
-{
-	while (is_whitespace(buffer[offset]))
-    {
-        (offset)++;
-    }
-	return 0;
-}
+
 
 #ifdef USE_MPFR
 void parse_level1(const char* buffer, int *offset, mpfr_t res, mpfr_t* values) //addition and subtraction

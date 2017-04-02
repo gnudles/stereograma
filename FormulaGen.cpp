@@ -10,6 +10,8 @@ FormulaGen::FormulaGen(QWidget *parent) :
 {
 	ui->setupUi(this);
 	setBasicImageParent(this);
+	setSaveTitle("Formula Depth Image");
+	setFolderSettings("depthmaps");
 }
 
 FormulaGen::~FormulaGen()
