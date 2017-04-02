@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "raytracer.h"
 #include "stereomaker.h"
 
 #include "imageviewer.h"
 #include "modeldepthviewer.h"
 #include "anaglyphmaker.h"
+#include "FormulaGen.h"
 #include "stringtype.h"
 #include <QMessageBox>
 #include <QSettings>
@@ -44,6 +44,11 @@ void MainWindow::setDepthImage(const QImage &image)
 {
     ui->depthImage->setImage(image);
 }
+void MainWindow::setComposePattern(const QImage &image)
+{
+    ui->composeImage->setImage(image);
+}
+
 
 void MainWindow::on_renderButton_clicked()
 {
@@ -257,4 +262,10 @@ void MainWindow::on_actionRemove_preset_triggered()
         m_presets.removeAt(index);
         ui->presetSelect->removeItem(index);
     }
+}
+
+void MainWindow::on_actionGenerate_Depth_Map_triggered()
+{
+	FormulaGen * formulaWindow=new FormulaGen(this);
+    formulaWindow->show();
 }

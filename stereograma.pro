@@ -10,6 +10,7 @@ TARGET = stereograma
 TEMPLATE = app
 
 LIBS += -lGLU -ldl
+DEFINES+= USE_FLOAT
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -27,7 +28,9 @@ SOURCES += main.cpp\
     anaglyphmaker.cpp \
     stringtype.cpp \
     trirender.cpp \
-    RPly/rply.c
+    RPly/rply.c \
+    parse.cpp \
+    FormulaGen.cpp
 
 HEADERS  += mainwindow.h \
     imagecontainerwidget.h \
@@ -45,14 +48,17 @@ HEADERS  += mainwindow.h \
     stringtype.h \
     trirender.h \
     RPly/rply.h \
-    RPly/rplyfile.h
+    RPly/rplyfile.h \
+    parse.h \
+    FormulaGen.h
 
 FORMS    += mainwindow.ui \
     imageviewer.ui \
     modeldepthviewer.ui \
     presetedit.ui \
     anaglyphmaker.ui \
-    stringtype.ui
+    stringtype.ui \
+    FormulaGen.ui
 
 RESOURCES += \
     rsc.qrc

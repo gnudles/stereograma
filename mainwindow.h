@@ -18,6 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setDepthImage(const QImage & image);
+	void setComposePattern(const QImage & image);
+	
 
 private slots:
     void on_renderButton_clicked();
@@ -43,6 +45,8 @@ private slots:
 
     void on_actionRemove_preset_triggered();
 
+	void on_actionGenerate_Depth_Map_triggered();
+	
 private:
     void loadPresets();
     void savePresets();

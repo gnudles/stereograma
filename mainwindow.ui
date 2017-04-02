@@ -322,7 +322,7 @@
      <x>0</x>
      <y>0</y>
      <width>639</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -341,6 +341,7 @@
     <addaction name="menuImport_model"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
+    <addaction name="actionGenerate_Depth_Map"/>
    </widget>
    <widget class="QMenu" name="menuPresets">
     <property name="enabled">
@@ -459,6 +460,11 @@
   <action name="actionRename_Preset">
    <property name="text">
     <string>Rename Preset</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Depth_Map">
+   <property name="text">
+    <string>Generate Depth Map</string>
    </property>
   </action>
  </widget>
