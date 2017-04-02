@@ -1,0 +1,37 @@
+version: '{build}'
+
+init:
+- git config --global core.autocrlf input
+
+environment:
+  matrix:
+  - QT5: C:\Qt\5.3\mingw482_32
+    MINGW: C:\Qt\Tools\mingw482_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.4\mingw491_32
+    MINGW: C:\Qt\Tools\mingw491_32
+    use_cmake: "false"
+
+matrix:
+  fast_finish: true
+
+before_build:
+- set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
+
+build_script:
+- mkdir .\build
+- cd .\build
+
+# build library and tests
+- if [%use_cmake%]==[true] (
+    cmake --version &&
+    cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
+    make &&
+    dir /s &&
+    cd .\tests)
+  else (
+    qmake -v &&
+    qmake ..\stereograma.pro CONFIG+=release DESTDIR=%cd% &&
+    mingw32-make &&
+    dir /s)
+
