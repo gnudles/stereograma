@@ -322,7 +322,7 @@
      <x>0</x>
      <y>0</y>
      <width>639</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -339,9 +339,9 @@
     <addaction name="actionLoad_Texture"/>
     <addaction name="actionLoad_Depth_Map"/>
     <addaction name="menuImport_model"/>
+    <addaction name="actionGenerate_Depth_Map"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
-    <addaction name="actionGenerate_Depth_Map"/>
    </widget>
    <widget class="QMenu" name="menuPresets">
     <property name="enabled">

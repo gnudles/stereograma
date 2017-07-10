@@ -9,7 +9,9 @@ QT       += core gui network opengl
 TARGET = stereograma
 TEMPLATE = app
 
-LIBS += -lGLU -ldl
+linux:LIBS += -lGLU
+win32:LIBS += -lGLU32 -lOpengl32
+win32:RC_FILE = icon_res.rc
 DEFINES+= USE_FLOAT
 
 SOURCES += main.cpp\

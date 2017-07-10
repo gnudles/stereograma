@@ -113,10 +113,11 @@ void MainWindow::on_action_obj_triggered()
 	QString setting_name="objdir";
 	QString cdir=settings.value(setting_name,"models/").toString();
 	QString fileName = QFileDialog::getOpenFileName(parentWidget(), "Load Obj file", cdir, tr("OBJ File (*.obj *.OBJ)"));
-    Model3D *m3d= new Model3D();
+    Model3D *m3d;
 	if(fileName!="")
 	{
 		settings.setValue(setting_name, QFileInfo(fileName).absoluteDir().absolutePath());
+        m3d = new Model3D();
         m3d->LoadObj(fileName);
         ModelDepthViewer * modelviewer=new ModelDepthViewer(this);
         modelviewer->setModel(m3d);
@@ -132,10 +133,11 @@ void MainWindow::on_action_ply_triggered()
     QString setting_name="objdir";
     QString cdir=settings.value(setting_name,"models/").toString();
     QString fileName = QFileDialog::getOpenFileName(parentWidget(), "Load Ply file", cdir, tr("PLY File (*.ply *.PLY)"));
-    Model3D *m3d= new Model3D();
+    Model3D *m3d;
     if(fileName!="")
     {
         settings.setValue(setting_name, QFileInfo(fileName).absoluteDir().absolutePath());
+        m3d = new Model3D();
         m3d->LoadPly(fileName);
         ModelDepthViewer * modelviewer=new ModelDepthViewer(this);
         modelviewer->setModel(m3d);
