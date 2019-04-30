@@ -26,8 +26,8 @@ static void putPixel(long long  x,long long  y, long long  value)
 
     if (x<image_width*int_scale && x>=0 && y<image_height*int_scale && y>=0)
     {
-        if (value>(256*int_scale-1))
-            value=(256*int_scale-1);
+        if (value>(256*int_scale-1)) return;
+            //value=(256*int_scale-1);
         else if (value<0)
             value=0;
         if (image_buffer[(x/int_scale)+(y/int_scale)*image_width]<(unsigned char)(value/int_scale))

@@ -7,7 +7,7 @@ class ImageFileDialog : public QFileDialog
 {
     Q_OBJECT
 public:
-    ImageFileDialog(QWidget *parent):QFileDialog(parent){};
+    ImageFileDialog(QWidget *parent):QFileDialog(parent){setOption(QFileDialog::DontUseNativeDialog);}
     void init();
     void deinit();
 private:
