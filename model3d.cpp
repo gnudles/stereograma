@@ -10,6 +10,8 @@ Model3D::Model3D()
     m_triangles=0;
     m_points=0;
     m_colors=0;
+    m_nPoints=0;
+    m_nTriangles=0;
 }
 
 Model3D::~Model3D()
@@ -22,6 +24,13 @@ Model3D::~Model3D()
         delete [] m_colors;
 }
 
+typedef struct
+{
+    unsigned int a;
+    unsigned int b;
+    unsigned int c;
+} triple;
+
 void Model3D::LoadObj(const QString & filename)
 {
     QByteArray _filename=filename.toUtf8();
@@ -31,13 +40,13 @@ void Model3D::LoadObj(const QString & filename)
     QVector<QVector3D> points;
     QVector<triple> triangles;
     float minX=INT_MAX,maxX=INT_MIN,minY=INT_MAX,maxY=INT_MIN,minZ=INT_MAX,maxZ=INT_MIN;
-    if (fp)
+    //if (fp)
     {
         char buffer[100];
         float vtx[3];
-        unsigned int extraface;
+        unsigned int extraface1,extraface2,extraface3;
         int nf;
-        triple tf;
+        triple tf, tf_orig;
         unsigned int dummy;
         while(fgets(buffer,100,fp))
         {
@@ -61,18 +70,18 @@ void Model3D::LoadObj(const QString & filename)
             else if (buffer[0]=='f')
             {
 
-                nf=sscanf(buffer+1,"%u %u %u %u",&tf.a,&tf.b,&tf.c,&extraface);
+                nf=sscanf(buffer+1,"%u %u %u %u %u %u",&tf.a,&tf.b,&tf.c,&extraface1,&extraface2,&extraface3);
                 if (nf<3)
                 {
-                    nf=sscanf(buffer+1,"%u/%u %u/%u %u/%u %u/%u",&tf.a,&dummy,&tf.b,&dummy,&tf.c,&dummy,&extraface,&dummy);
+                    nf=sscanf(buffer+1,"%u/%u %u/%u %u/%u %u/%u %u/%u %u/%u",&tf.a,&dummy,&tf.b,&dummy,&tf.c,&dummy,&extraface1,&dummy,&extraface2,&dummy,&extraface3,&dummy);
                     nf/=2;
                     if (nf<3)
                     {
-                        nf=sscanf(buffer+1,"%u//%u %u//%u %u//%u %u//%u",&tf.a,&dummy,&tf.b,&dummy,&tf.c,&dummy,&extraface,&dummy);
+                        nf=sscanf(buffer+1,"%u//%u %u//%u %u//%u %u//%u %u//%u %u//%u",&tf.a,&dummy,&tf.b,&dummy,&tf.c,&dummy,&extraface1,&dummy,&extraface2,&dummy,&extraface3,&dummy);
                         nf/=2;
                         if (nf<3)
                         {
-                            nf=sscanf(buffer+1,"%u/%u/%u %u/%u/%u %u/%u/%u %u/%u/%u",&tf.a,&dummy,&dummy,&tf.b,&dummy,&dummy,&tf.c,&dummy,&dummy,&extraface,&dummy,&dummy);
+                            nf=sscanf(buffer+1,"%u/%u/%u %u/%u/%u %u/%u/%u %u/%u/%u %u/%u/%u %u/%u/%u",&tf.a,&dummy,&dummy,&tf.b,&dummy,&dummy,&tf.c,&dummy,&dummy,&extraface1,&dummy,&dummy,&extraface2,&dummy,&dummy,&extraface3,&dummy,&dummy);
                             nf/=3;
                         }
                     }
@@ -80,17 +89,45 @@ void Model3D::LoadObj(const QString & filename)
                 if (nf>=3)
                 {
                     triangles.append(tf);
-                    if (nf==4)
+                    if (nf>=4)
 					{
-                        tf.b=extraface;
-                        triangles.append(tf);
+                        tf_orig = tf;
+                        if (nf == 4) //TODO: this is a dummy polygon to triangles conversion. If somebody cares...
+                        {
+                            tf.b=extraface1;
+                            triangles.append(tf);
+                        }
+                        if (nf == 5)
+                        {
+                            tf.a=tf_orig.c;
+                            tf.b=extraface1;
+                            tf.c=extraface2;
+                            triangles.append(tf);
+                            tf.a=extraface2;
+                            tf.b=tf_orig.a;
+                            tf.c=tf_orig.c;
+                            triangles.append(tf);
+                        }
+                        if (nf == 6)
+                        {
+                            tf.a=tf_orig.c;
+                            tf.b=extraface1;
+                            tf.c=extraface2;
+                            triangles.append(tf);
+                            tf.a=extraface2;
+                            tf.b=tf_orig.a;
+                            tf.c=tf_orig.c;
+                            triangles.append(tf);
+                            tf.a=extraface2;
+                            tf.b=tf_orig.a;
+                            tf.c=extraface3;
+                            triangles.append(tf);
+                        }
 					}
                 }
-
             }
         }
         fclose(fp);
-
     }
     float xh=(maxX-minX)/2;
     float yh=(maxY-minY)/2;
