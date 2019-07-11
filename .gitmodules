@@ -1,0 +1,3 @@
+[submodule "exprtk"]
+	path = exprtk
+	url = https://github.com/ArashPartow/exprtk.git
