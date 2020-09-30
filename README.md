@@ -7,3 +7,12 @@ There is also an interface for combining two pictures taken from different angle
 How to build:
 
 Since it was developed with QtCreator, you can generate a makefile from the .pro file with qmake, or just compile it from within the IDE.
+
+# Support me!
+
+I make many open source projects, and also contribute to the open source community. This project is a great example for that.
+If you liked this piece of software, and you want to give back, you don't have to open your wallet, just give a try to my mobile puzzle games:
+
+
+https://play.google.com/store/apps/details?id=com.github.gnudles.rollingmarbles
+
