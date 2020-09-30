@@ -4,7 +4,7 @@ This is a cross-platform [stereogram maker/stereogram creator/stereogram generat
 There is also an interface for combining two pictures taken from different angles into anaglyph.
 
 
-How to build:
+## How to build:
 
 Since it was developed with QtCreator, you can generate a makefile from the .pro file with qmake, or just compile it from within the IDE.
 
