@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network opengl
+QT       += core gui network opengl \
+    widgets
 
 TARGET = stereograma
 TEMPLATE = app
@@ -15,6 +16,7 @@ win32:RC_FILE = icon_res.rc
 DEFINES+= USE_FLOAT
 
 SOURCES += main.cpp\
+    ClickableLabel.cpp \
         mainwindow.cpp \
     imagecontainerwidget.cpp \
     imageviewer.cpp \
@@ -35,6 +37,8 @@ SOURCES += main.cpp\
     FormulaGen.cpp
 
 HEADERS  += mainwindow.h \
+    ClickableLabel.h \
+    exprtk/exprtk.hpp \
     imagecontainerwidget.h \
     imageviewer.h \
     model3d.h \
@@ -52,6 +56,7 @@ HEADERS  += mainwindow.h \
     RPly/rply.h \
     RPly/rplyfile.h \
     parse.h \
+    exprtk/exprtk.h \
     FormulaGen.h
 
 FORMS    += mainwindow.ui \

@@ -30,6 +30,10 @@ protected:
 
     void paintGL();
     void resizeGL( int w, int h );
+    /*void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);*/
+
   protected slots:
 
   signals:

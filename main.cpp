@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     glf.setSamples(4);
     QGLFormat::setDefaultFormat(glf);
     a.setWindowIcon(QIcon(":/images/stereograma.svg"));
-    QCoreApplication::setOrganizationName("Besiyata");
+    QCoreApplication::setOrganizationName("Kapandaria");
     QCoreApplication::setApplicationName("Stereograma");
     MainWindow w;
     w.show();

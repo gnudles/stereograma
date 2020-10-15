@@ -376,7 +376,7 @@ p_ply ply_open_from_file(FILE *fp, p_ply_error_cb error_cb,
     if (error_cb == NULL) error_cb = ply_error_cb;
     assert(fp);
     if (!ply_type_check()) {
-        error_cb(ply, "Incompatible type system");
+        error_cb(NULL, "Incompatible type system");
         return NULL;
     }
     ply = ply_alloc();
@@ -478,7 +478,7 @@ p_ply ply_create_to_file(FILE *fp, e_ply_storage_mode storage_mode,
     p_ply ply;
     assert(fp && storage_mode <= PLY_DEFAULT);
     if (!ply_type_check()) {
-        error_cb(ply, "Incompatible type system");
+        error_cb(NULL, "Incompatible type system");
         return NULL;
     }
     ply = ply_alloc();

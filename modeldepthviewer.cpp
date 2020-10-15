@@ -111,3 +111,4 @@ void ModelDepthViewer::on_heightSpin_editingFinished()
     ui->modelview->setViewport(getOutputImageWidth(),getOutputImageHeight());
     ui->modelview->repaint();
 }
+

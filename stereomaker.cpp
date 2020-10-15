@@ -11,7 +11,7 @@ StereoMaker::StereoMaker()
     depthsep=(int*)malloc(256*sizeof(int));
 }
 
-void StereoMaker::composeDepth(QImage & depth,QImage & compose)
+void StereoMaker::composeDepth(QImage & depth,QImage & compose,float compose_height)
 {
     int dw=depth.width(),dh=depth.height(),cw=compose.width(),ch=compose.height();
     int x,y,cy=0;
@@ -29,10 +29,12 @@ void StereoMaker::composeDepth(QImage & depth,QImage & compose)
             ccptr=cptr;
             dchunk=dptr+x-cw;
             dchunkend=dptr+x;
+
             while(dchunk < dchunkend)
             {
-                if (*ccptr > *dchunk)
-                    *dchunk=*ccptr;
+                int value=(*ccptr)*compose_height;
+                if (value > *dchunk)
+                    *dchunk=value;
                 dchunk++;
                 ccptr++;
             }
@@ -44,8 +46,9 @@ void StereoMaker::composeDepth(QImage & depth,QImage & compose)
             dchunkend=dptr+dw;
             while(dchunk < dchunkend)
             {
-                if (*ccptr > *dchunk)
-                    *dchunk=*ccptr;
+                int value=(*ccptr)*compose_height;
+                if (value > *dchunk)
+                    *dchunk=value;
                 dchunk++;
                 ccptr++;
             }
@@ -84,7 +87,7 @@ void scaleLine(uchar* big,const uchar* original,int sizeoriginal)
     *big=*original;
 }
 
-QImage StereoMaker::render(const QImage & map,const QImage & ptrn,Preset *psettings,QProgressBar * qpbar,const QImage * eye_helper_right,const QImage * eye_helper_left,bool show_helper)
+QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *psettings, QProgressBar * qpbar, const QImage * eye_helper_right, const QImage * eye_helper_left, bool show_helper, bool helpers_margin)
 {
     qpbar->setMinimum(0);
     qpbar->setMaximum(10);
@@ -117,7 +120,21 @@ QImage StereoMaker::render(const QImage & map,const QImage & ptrn,Preset *psetti
     QImage pattern=ptrn.scaled(vmaxsep/oversam+1,(ptrn.height()*(maxsep+1))/ptrn.width(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
     if (pattern.depth()!=32)
         pattern=pattern.convertToFormat(QImage::Format_ARGB32);
-    QImage result(width,height,pattern.format());
+    int rh=0;
+    QImage::Format out_format = pattern.format();
+    if (show_helper && helpers_margin)
+    {
+        if (eye_helper_left==0)
+            rh=15*psettings->getDotsPerInch()/72;
+        else
+        {
+            rh=eye_helper_left->height();
+        }
+        rh=rh*3/2;
+        out_format=QImage::Format_ARGB32;
+    }
+
+    QImage result(width,height+rh,out_format);
     QImage CurResultLine(vwidth,1,pattern.format());
     QImage CurResultScaledLine;//scaled down
 
@@ -239,7 +256,7 @@ QImage StereoMaker::render(const QImage & map,const QImage & ptrn,Preset *psetti
 
 
         CurResultScaledLine = CurResultLine.scaledToWidth(width,Qt::SmoothTransformation);
-        memcpy(result.scanLine(y),CurResultScaledLine.scanLine(0),result.bytesPerLine());
+        memcpy(result.scanLine(y+rh),CurResultScaledLine.scanLine(0),result.bytesPerLine());
         if (progbarval!=10*y/(height-1))
         {
             progbarval=10*y/(height-1);
@@ -263,27 +280,32 @@ QImage StereoMaker::render(const QImage & map,const QImage & ptrn,Preset *psetti
         if(!psettings->getIsParallel())
         {
             int mindepth=dpi*psettings->getMinimumDepth();
+
             rect_sep=(int)(((long)eyeSep*mindepth)/(mindepth+obsDist));
         }
         else
             rect_sep=maxsep;
+        if (rh == 0)
+        {
+            rh = 30;
+        }
         if (eye_helper_left!=0)
         {
-            painter.drawImage(QPoint(result.width()/2-rect_sep/2-rw/2,5),*eye_helper_left);
-            painter.drawImage(QPoint(result.width()/2+rect_sep/2-rw/2,5),*eye_helper_right);
+            painter.drawImage(QPoint(result.width()/2-rect_sep/2-rw/2,rh/6),*eye_helper_left);
+            painter.drawImage(QPoint(result.width()/2+rect_sep/2-rw/2,rh/6),*eye_helper_right);
 
         }
         else
         {
             painter.setPen(QPen(QColor(255,255,255,128)));
-            painter.drawRect( result.width()/2-rect_sep/2-rw/2, 5, rw, rw );
-            painter.drawRect( result.width()/2+rect_sep/2-rw/2, 5, rw, rw );
+            painter.drawRect( result.width()/2-rect_sep/2-rw/2, rh/6, rw, rw );
+            painter.drawRect( result.width()/2+rect_sep/2-rw/2, rh/6, rw, rw );
             painter.setPen(QPen(QColor(0,0,0,128)));
-            painter.drawRect( result.width()/2-rect_sep/2-rw/2+1, 5+1, rw-2, rw-2 );
-            painter.drawRect( result.width()/2+rect_sep/2-rw/2+1, 5+1, rw-2, rw-2 );
+            painter.drawRect( result.width()/2-rect_sep/2-rw/2+1, rh/6+1, rw-2, rw-2 );
+            painter.drawRect( result.width()/2+rect_sep/2-rw/2+1, rh/6+1, rw-2, rw-2 );
 
-            painter.fillRect( result.width()/2-rect_sep/2-rw/2+2, 5+2, rw-3, rw-3 ,QColor(255,255,255,60));
-            painter.fillRect( result.width()/2+rect_sep/2-rw/2+2, 5+2, rw-3, rw-3 ,QColor(255,255,255,60));
+            painter.fillRect( result.width()/2-rect_sep/2-rw/2+2, rh/6+2, rw-3, rw-3 ,QColor(255,255,255,60));
+            painter.fillRect( result.width()/2+rect_sep/2-rw/2+2, rh/6+2, rw-3, rw-3 ,QColor(255,255,255,60));
         }
     }
     return result;

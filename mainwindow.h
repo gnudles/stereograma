@@ -47,6 +47,10 @@ private slots:
 
 	void on_actionGenerate_Depth_Map_triggered();
 	
+    void on_rolling_clicked();
+
+    void on_show_helpers_toggled(bool checked);
+
 private:
     void loadPresets();
     void savePresets();

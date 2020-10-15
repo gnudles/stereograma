@@ -7,7 +7,7 @@ Preset::Preset(const QString & name)
     m_observer_distance=20;
     m_minimum_depth=5;
     m_maximum_depth=9;
-    m_dpi = 90;
+    m_dpi = 150;
     m_isParallel=true;
     m_result_width=2048;
     m_result_height=1536;

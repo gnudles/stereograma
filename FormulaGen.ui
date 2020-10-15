@@ -7,16 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>596</width>
-    <height>645</height>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Formula</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,2,0">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -28,7 +28,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;x=[0..1]&lt;/p&gt;&lt;p&gt;y=[0..1]&lt;/p&gt;&lt;p&gt;output =&amp;gt; [0..1]&lt;/p&gt;&lt;p&gt;see &lt;a href=&quot;https://github.com/ArashPartow/exprtk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ExprTk manual&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;for function list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;x=[0..1]&lt;/p&gt;&lt;p&gt;y=[0..1]&lt;/p&gt;&lt;p&gt;w=Width&lt;/p&gt;&lt;p&gt;h=Height&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;output&lt;/span&gt; =&amp;gt; [0..1]&lt;/p&gt;&lt;p&gt;see &lt;a href=&quot;https://github.com/ArashPartow/exprtk&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ExprTk manual&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;for function list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="textFormat">
            <enum>Qt::RichText</enum>
@@ -116,11 +116,60 @@
          </sizepolicy>
         </property>
         <property name="plainText">
-         <string>0.1*(sin(120*(1+(x-0.5)^2)*pi)*sin(120*(1+(y-0.5)^2)*pi)+1) + ((x-0.5)^2+(y-0.5)^2)*2 -0.12</string>
+         <string/>
         </property>
        </widget>
       </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>History</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="listWidget"/>
+        </item>
+       </layout>
+      </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>errors:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="errorTable">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="cornerButtonEnabled">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Position</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Type</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Msg</string>
+       </property>
+      </column>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="imageViewArea">

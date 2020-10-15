@@ -6,6 +6,12 @@
 #include <QMessageBox>
 #include <QMimeData>
 
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,1)
+    #define WEBP_FILTER " *.webp *.WEBP"
+#else
+    #define WEBP_FILTER ""
+#endif
 
 
 ImageContainerWidget::ImageContainerWidget(QWidget *parent) :
@@ -125,7 +131,7 @@ void ImageContainerWidget::openDialog()
     dlg.setFileMode( QFileDialog::ExistingFile);
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
     dlg.setDirectory(cdir);
-    dlg.setNameFilter(tr("Images (*.png *.xpm *.jpg *.jpeg *.bmp *.gif *.tiff *.tif *.PNG *.XPM *.JPG *.JPEG *.BMP *.GIF *.TIF *.TIFF)"));
+    dlg.setNameFilter(tr("Images (*.png *.xpm *.jpg *.jpeg *.bmp *.gif *.tiff *.tif *.PNG *.XPM *.JPG *.JPEG *.BMP *.GIF *.TIF *.TIFF" WEBP_FILTER ")"));
     dlg.setWindowTitle("Open "+getText());
     QString fileName;
 

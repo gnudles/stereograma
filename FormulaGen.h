@@ -6,7 +6,7 @@
 namespace Ui {
 class FormulaGen;
 }
-
+class QListWidgetItem;
 class FormulaGen : public QMainWindow, public BasicImageWidget
 {
 	Q_OBJECT
@@ -26,8 +26,11 @@ private slots:
 	
 	void on_actionPush_Image_as_Compose_Pattern_triggered();
 	
+    void on_listWidget_itemActivated(QListWidgetItem *item);
+
 private:
 	Ui::FormulaGen *ui;
+    QStringList formulaList;
 };
 
 #endif // FORMULAGEN_H

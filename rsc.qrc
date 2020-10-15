@@ -8,5 +8,6 @@
         <file>save.png</file>
         <file>exit.png</file>
         <file>swap.png</file>
+        <file>rolling.jpg</file>
     </qresource>
 </RCC>

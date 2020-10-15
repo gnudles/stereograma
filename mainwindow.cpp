@@ -12,6 +12,8 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QDataStream>
+#include <QDesktopServices>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -64,8 +66,16 @@ void MainWindow::on_renderButton_clicked()
         depth_image=depth_image.scaled(cur_preset->getResultWidth(),cur_preset->getResultHeight());
         if (!ui->composeImage->getImage().isNull())
         {
-            QImage compose_image=ui->composeImage->getImage().convertToFormat(QImage::Format_Indexed8,smaker.getGrayScale());
-            smaker.composeDepth(depth_image,compose_image);
+            float compose_height = ui->composeLevel->value()/100.0;
+            float compose_scale = ui->composeScale->value()/128.0;
+            QImage compose_image=ui->composeImage->getImage();
+            if (compose_scale!=1)
+            {
+                //compose_image = compose_image.scaledToWidth((int)(compose_image.width()*compose_scale),Qt::FastTransformation);
+                compose_image = compose_image.scaled((int)(compose_image.width()*compose_scale),(int)(compose_image.height()*compose_scale),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            }
+            compose_image=compose_image.convertToFormat(QImage::Format_Indexed8,smaker.getGrayScale());
+            smaker.composeDepth(depth_image,compose_image,compose_height);
         }
 		ImageViewer * imview=new ImageViewer(this);
         imview->setWindowTitle("Result");
@@ -76,11 +86,14 @@ void MainWindow::on_renderButton_clicked()
         const QImage *eye_helper_left=0;
         const QImage *eye_helper_right=0;
         bool show_helpers=false;
+        bool margin_helpers = false;
         QImage eye_helper_image_left=ui->helpers_image->getImage();
         QImage eye_helper_image_right;
         if (ui->show_helpers->isChecked())
         {
             show_helpers=true;
+            margin_helpers = ui->margin_helpers->isChecked();
+            if (ui->show_helpers->isChecked())
             if(!eye_helper_image_left.isNull())
             {
                 if (ui->dual_helpers->isChecked())
@@ -89,8 +102,17 @@ void MainWindow::on_renderButton_clicked()
                     int height=eye_helper_image_left.height();
                     eye_helper_image_right=eye_helper_image_left.copy(half_width,0,half_width,height);
                     eye_helper_image_left=eye_helper_image_left.copy(0,0,half_width,height);
-                    eye_helper_left=&eye_helper_image_left;
-                    eye_helper_right=&eye_helper_image_right;
+
+                    if (cur_preset->getIsParallel())
+                    {
+                        eye_helper_left=&eye_helper_image_left;
+                        eye_helper_right=&eye_helper_image_right;
+                    }
+                    else
+                    {
+                        eye_helper_right=&eye_helper_image_left;
+                        eye_helper_left=&eye_helper_image_right;
+                    }
                 }
                 else
                 {
@@ -100,7 +122,7 @@ void MainWindow::on_renderButton_clicked()
             }
 
         }
-        QImage result =smaker.render(depth_image, ui->textureImage->getImage(),cur_preset,ui->parallelProgress,eye_helper_right,eye_helper_left,show_helpers);
+        QImage result =smaker.render(depth_image, ui->textureImage->getImage(),cur_preset,ui->parallelProgress,eye_helper_right,eye_helper_left,show_helpers,margin_helpers);
         imview->setImage(result);
 		imview->show();
     }
@@ -112,6 +134,7 @@ void MainWindow::on_action_obj_triggered()
 	QSettings settings;
 	QString setting_name="objdir";
 	QString cdir=settings.value(setting_name,"models/").toString();
+
 	QString fileName = QFileDialog::getOpenFileName(parentWidget(), "Load Obj file", cdir, tr("OBJ File (*.obj *.OBJ)"));
     Model3D *m3d;
 	if(fileName!="")
@@ -270,4 +293,17 @@ void MainWindow::on_actionGenerate_Depth_Map_triggered()
 {
 	FormulaGen * formulaWindow=new FormulaGen(this);
     formulaWindow->show();
+}
+
+void MainWindow::on_rolling_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://play.google.com/store/apps/details?id=com.github.gnudles.rollingmarbles"));
+}
+
+void MainWindow::on_show_helpers_toggled(bool checked)
+{
+
+    ui->helpers_image->setDisabled(!checked);
+    ui->dual_helpers->setDisabled(!checked);
+    ui->margin_helpers->setDisabled(!checked);
 }
