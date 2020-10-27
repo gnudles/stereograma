@@ -24,7 +24,19 @@ FormulaGen::FormulaGen(QWidget *parent) :
     formulaList=settings.value("formula",QStringList()<<"0.5+0.5*sin( 100*(((x-0.5)*w/h)^2+(y-0.5)^2)^0.5)"<<
                                "var f :=sin(x*2*pi)*0.3;\n"
                                "var multip := 3.333;\n"
-                               "(f>abs((y-0.5)))*(0.5+0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))+(-f>abs((y-0.5)))*(0.5-0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))").toStringList();
+                               "(f>abs((y-0.5)))*(0.5+0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))+(-f>abs((y-0.5)))*(0.5-0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))"<<
+                               "var x0 := (x*w/h-0.8)*4;\n"
+                               "var y0 := (y-0.5)*4;\n"
+                               "var tx := x0;\n"
+                               "var ty := y0;\n"
+                               "var temp := 0;\n"
+                               "for(var i :=0; i <=8;i+=1)\n"
+                               "{\n"
+                               "temp := tx*tx-ty*ty+x0;\n"
+                               "ty := 2*tx*ty+y0;\n"
+                               "tx := temp;\n"
+                               "}\n"
+                               "(tx*tx+ty*ty)*0.1").toStringList();
     ui->listWidget->addItems(formulaList);
     ui->formulaPText->setPlainText(formulaList.last());
 }
@@ -70,8 +82,9 @@ void FormulaGen::on_generatePb_clicked()
     expression.register_symbol_table(symbol_table);
             parser_t::settings_store sstore;
             sstore.disable_all_logic_ops();
-            sstore.disable_all_assignment_ops();
+            //sstore.disable_all_assignment_ops();
             sstore.disable_all_control_structures();
+            sstore.enable_control_structure(parser_t::settings_store::e_ctrl_for_loop);
             parser_t parser(sstore);
 
     bool compile_valid=parser.compile(formula_buf, expression);
@@ -108,22 +121,33 @@ void FormulaGen::on_generatePb_clicked()
     else {
               ui->errorTable->setRowCount(parser.error_count());
               ui->errorTable->setColumnCount(3);
+              QTextCursor cursor = ui->formulaPText->textCursor();
+
+
+
         for (std::size_t i = 0; i < parser.error_count(); ++i)
               {
                  typedef exprtk::parser_error::type error_t;
 
                  error_t error = parser.get_error(i);
 
-                 printf("Error[%02d] Position: %02d Type: [%14s] Msg: %s\n",
+                 /*printf("Error[%02d] Position: %02d Type: [%14s] Msg: %s\n",
                         (int)i,
                         (int)error.token.position,
                         exprtk::parser_error::to_str(error.mode).c_str(),
-                        error.diagnostic.c_str());
-                 ui->errorTable->setItem(i,0,new QTableWidgetItem(QString::number(error.token.position)));
+                        error.diagnostic.c_str());*/
+                 cursor.setPosition(error.token.position);
+                 ui->errorTable->setItem(i,0,new QTableWidgetItem(QString::number(error.token.position)+QString(" [%1,%2]").arg(cursor.blockNumber()+1).arg(cursor.positionInBlock())));
                  ui->errorTable->setItem(i,1,new QTableWidgetItem(tr(exprtk::parser_error::to_str(error.mode).c_str())));
                  ui->errorTable->setItem(i,2,new QTableWidgetItem(tr(error.diagnostic.c_str())));
 
               }
+        cursor.setPosition(parser.get_error(0).token.position);
+        cursor.movePosition(QTextCursor::Right,QTextCursor::KeepAnchor);
+        ui->formulaPText->setTextCursor(cursor);
+
+
+
     }
 }
 
