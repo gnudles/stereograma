@@ -20,7 +20,11 @@ FormulaGen::FormulaGen(QWidget *parent) :
 	setSaveTitle("Formula Depth Image");
 	setFolderSettings("depthmaps");
     QSettings settings;
-    formulaList=settings.value("formula",QStringList()<<"0.5+0.5*sin( 100*(((x-0.5)*w/h)^2+(y-0.5)^2)^0.5)").toStringList();
+    //settings.remove("formula");
+    formulaList=settings.value("formula",QStringList()<<"0.5+0.5*sin( 100*(((x-0.5)*w/h)^2+(y-0.5)^2)^0.5)"<<
+                               "var f :=sin(x*2*pi)*0.3;\n"
+                               "var multip := 3.333;\n"
+                               "(f>abs((y-0.5)))*(0.5+0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))+(-f>abs((y-0.5)))*(0.5-0.5*multip*sqrt(f*f-(y-0.5)*(y-0.5)))").toStringList();
     ui->listWidget->addItems(formulaList);
     ui->formulaPText->setPlainText(formulaList.last());
 }
