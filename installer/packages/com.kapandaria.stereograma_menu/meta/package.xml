@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Start Menu shortcut</DisplayName>
+    <Description>Install Start Menu shortcut</Description>
+    <Version>2.6.0</Version>
+    <ReleaseDate>2020-11-12</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+</Package>

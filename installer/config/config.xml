@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Stereograma</Name>
+    <Version>2.6.0</Version>
+    <Title>Stereograma Installer</Title>
+    <Publisher>Kapandaria</Publisher>
+    <StartMenuDir>Stereograma</StartMenuDir>
+    <TargetDir>@HomeDir@/Stereograma</TargetDir>
+</Installer>

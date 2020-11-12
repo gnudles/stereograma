@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Stereograma Binaries</DisplayName>
+    <Description>Install Stereograma binaries (Software)</Description>
+    <Version>2.6.0</Version>
+    <ReleaseDate>2020-11-12</ReleaseDate>
+    <Licenses>
+        <License name="GNU General Public License v3.0" file="LICENSE.txt" />
+    </Licenses>
+    <Default>true</Default>
+</Package>
