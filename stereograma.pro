@@ -13,6 +13,7 @@ TEMPLATE = app
 linux:LIBS += -lGLU
 win32:LIBS += -lGLU32 -lOpengl32
 win32:RC_FILE = icon_res.rc
+win32:QMAKE_CXXFLAGS += -Wa,-mbig-obj
 DEFINES+= USE_FLOAT
 
 SOURCES += main.cpp\
