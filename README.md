@@ -3,6 +3,9 @@ This is a open source cross-platform [**stereogram maker**/**stereogram creator*
 
 There is also an interface for combining two pictures taken from different angles into anaglyph.
 
+### Where to download?
+
+visit that link: https://kapandaria.wordpress.com/stereograma/
 
 ### How to build:
 
