@@ -1,5 +1,11 @@
 #include "model3d.h"
+#if defined(__APPLE__)
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <qopenglext.h>
+#else
 #include "qgl.h"
+#endif
 #include <stdio.h>
 #include <math.h>
 #include <limits.h>

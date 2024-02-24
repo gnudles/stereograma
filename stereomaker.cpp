@@ -1,7 +1,7 @@
 //algorithm was taken from http://www.techmind.org/stereo/stech.html
 #include "stereomaker.h"
 #include <QPainter>
-#include <QTime>
+#include <QElapsedTimer>
 
 
 QVector<QRgb> StereoMaker::grayscale;
@@ -149,7 +149,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
     int progbarval=0;
     int maxheight=dpi*(psettings->getMaximumDepth()-psettings->getMinimumDepth());
     //benchmark
-    QTime t_time;
+    QElapsedTimer t_time;
     t_time.start();
     unsigned int **patternptr=(unsigned int **)malloc(pattern_height*sizeof(void*));
     for (int i=pattern_height-1;i>=0;i--)
@@ -263,7 +263,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
             qpbar->setValue(progbarval);
         }
     }
-    qDebug("Time elapsed: %d ms", t_time.elapsed());
+    qDebug("Time elapsed: %lld ms", t_time.elapsed());
     free(lookL);
     free(lookR);
     free(mapptr);

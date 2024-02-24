@@ -1,12 +1,12 @@
 #ifndef GLMODELVIEW_H
 #define GLMODELVIEW_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QImage>
 #include <model3d.h>
 #include "basicimagewidget.h"
 
-class GlModelView : public QGLWidget,public BasicImageWidget
+class GlModelView : public QOpenGLWidget,public BasicImageWidget
 {
     Q_OBJECT
 public:

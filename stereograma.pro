@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network opengl \
-    widgets
+QT       += core gui network opengl widgets
 
 TARGET = stereograma
 TEMPLATE = app
@@ -57,7 +56,6 @@ HEADERS  += mainwindow.h \
     RPly/rply.h \
     RPly/rplyfile.h \
     parse.h \
-    exprtk/exprtk.h \
     FormulaGen.h
 
 FORMS    += mainwindow.ui \
