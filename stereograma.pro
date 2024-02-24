@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network opengl \
-    widgets
+QT       += core gui network openglwidgets widgets
 
 TARGET = stereograma
 TEMPLATE = app
