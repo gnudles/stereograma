@@ -1,43 +1,52 @@
 #include "glmodelview.h"
 #include "stereomaker.h"
-#include "imageviewer.h"
+#if defined(__APPLE__)
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #include <math.h>
 #include <stdio.h>
-#include <QGLShader>
-#include <QGLShaderProgram>
+#include <QOpenGLShader>
+#include <QOpenGLShaderProgram>
 #include <QMessageBox>
 #include <QProcess>
 #include <QCoreApplication>
+#include <QOpenGLContext>
 #include "modeldepthviewer.h"
 #include "trirender.h"
 
 GlModelView::GlModelView(QWidget *parent) :
-    QGLWidget(parent),m_zoom(500),m_contrast(100)
+    QOpenGLWidget(parent),m_zoom(500),m_contrast(100)
 {
     m_antialias=true;
     m_noShaders=false;
     m_new_width=1024;
     m_new_height=768;
     BasicImageWidget::setBasicImageParent(parent);
+    QSurfaceFormat glf = QSurfaceFormat::defaultFormat();
+    glf.setSamples(4);
+    setFormat(glf);
 }
 
 void GlModelView::initializeGL()
 {
-    if (!context()->isValid())
+    if (!(context()) ||  !context()->isValid())
     {
         QMessageBox::warning(this,"No OpenGL Driver","Depth Map generation is still available");
     }
 
-
-    if (QGLShader::hasOpenGLShaders(QGLShader::Vertex,context()) )
+    if (QOpenGLShader::hasOpenGLShaders(QOpenGLShader::Vertex,context()) )
     {
         QString declarations= "//uniform mat4 gl_ModelViewMatrix;  uniform mat4 gl_ProjectionMatrix; attribute vec4 gl_Vertex;\n";
         QString codev=       "void main()  {gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"\
                 "float zmax=-1.0;"\
                 "float zmin=1.0;"\
                 "float scale=(zmax-zmin);float offs=-zmin;float z=(gl_Position.z/gl_Position.w); gl_FrontColor = vec4((z+offs)/scale,(z+offs)/scale,(z+offs)/scale,1.0); } ";
-        QGLShader shaderv(QGLShader::Vertex);
+        QOpenGLShader shaderv(QOpenGLShader::Vertex);
         bool compile_success=shaderv.compileSourceCode(declarations+codev);
         if (!compile_success)
         {
@@ -45,7 +54,7 @@ void GlModelView::initializeGL()
         }
         if (compile_success)
         {
-            QGLShaderProgram program(context());
+            QOpenGLShaderProgram program(context());
             program.addShader(&shaderv);
             program.link();
             program.bind();
