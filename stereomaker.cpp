@@ -8,7 +8,12 @@ QVector<QRgb> StereoMaker::grayscale;
 
 StereoMaker::StereoMaker()
 {
-    depthsep=(int*)malloc(256*sizeof(int));
+    depthsep= new int [256];
+}
+
+StereoMaker::~StereoMaker()
+{
+    delete [] depthsep;
 }
 
 void StereoMaker::composeDepth(QImage & depth,QImage & compose,float compose_height)
