@@ -105,8 +105,8 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
 
     int x, left;
     int y, right;
-    int *lookL =(int*) malloc(vwidth*sizeof(int));
-    int *lookR =(int*) malloc(vwidth*sizeof(int));
+    int *lookL = new int [vwidth];
+    int *lookR = new int [vwidth];
 
     int dpi = psettings->getDotsPerInch();
     int yShift=dpi/16;
@@ -156,7 +156,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
     //benchmark
     QElapsedTimer t_time;
     t_time.start();
-    unsigned int **patternptr=(unsigned int **)malloc(pattern_height*sizeof(void*));
+    unsigned int **patternptr= new unsigned int *[pattern_height];
     for (int i=pattern_height-1;i>=0;i--)
     {
         patternptr[i]=(unsigned int*)pattern.scanLine(i);
@@ -269,10 +269,10 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
         }
     }
     qDebug("Time elapsed: %lld ms", t_time.elapsed());
-    free(lookL);
-    free(lookR);
+    delete [] lookL;
+    delete [] lookR;
     free(mapptr);
-    free(patternptr);
+    delete [] patternptr;
     if (show_helper)
     {
         QPainter painter(&result);
