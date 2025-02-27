@@ -260,7 +260,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
         }
 
 
-        CurResultScaledLine = CurResultLine.scaledToWidth(width,Qt::SmoothTransformation);
+        CurResultScaledLine = CurResultLine.scaled(width, 1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         memcpy(result.scanLine(y+rh),CurResultScaledLine.scanLine(0),result.bytesPerLine());
         if (progbarval!=10*y/(height-1))
         {
