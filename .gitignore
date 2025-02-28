@@ -1,2 +1,8 @@
-
+*.o
+moc_*.cpp
+moc_predefs.h
+ui_*.h
+qrc_*.cpp
+Makefile
+*.pro.user.*
 *.user
