@@ -8,7 +8,12 @@ QVector<QRgb> StereoMaker::grayscale;
 
 StereoMaker::StereoMaker()
 {
-    depthsep=(int*)malloc(256*sizeof(int));
+    depthsep= new int [256];
+}
+
+StereoMaker::~StereoMaker()
+{
+    delete [] depthsep;
 }
 
 void StereoMaker::composeDepth(QImage & depth,QImage & compose,float compose_height)
@@ -100,8 +105,8 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
 
     int x, left;
     int y, right;
-    int *lookL =(int*) malloc(vwidth*sizeof(int));
-    int *lookR =(int*) malloc(vwidth*sizeof(int));
+    int *lookL = new int [vwidth];
+    int *lookR = new int [vwidth];
 
     int dpi = psettings->getDotsPerInch();
     int yShift=dpi/16;
@@ -151,7 +156,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
     //benchmark
     QElapsedTimer t_time;
     t_time.start();
-    unsigned int **patternptr=(unsigned int **)malloc(pattern_height*sizeof(void*));
+    unsigned int **patternptr= new unsigned int *[pattern_height];
     for (int i=pattern_height-1;i>=0;i--)
     {
         patternptr[i]=(unsigned int*)pattern.scanLine(i);
@@ -255,7 +260,7 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
         }
 
 
-        CurResultScaledLine = CurResultLine.scaledToWidth(width,Qt::SmoothTransformation);
+        CurResultScaledLine = CurResultLine.scaled(width, 1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         memcpy(result.scanLine(y+rh),CurResultScaledLine.scanLine(0),result.bytesPerLine());
         if (progbarval!=10*y/(height-1))
         {
@@ -264,10 +269,10 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
         }
     }
     qDebug("Time elapsed: %lld ms", t_time.elapsed());
-    free(lookL);
-    free(lookR);
+    delete [] lookL;
+    delete [] lookR;
     free(mapptr);
-    free(patternptr);
+    delete [] patternptr;
     if (show_helper)
     {
         QPainter painter(&result);
@@ -289,11 +294,10 @@ QImage StereoMaker::render(const QImage & map, const QImage & ptrn, Preset *pset
         {
             rh = 30;
         }
-        if (eye_helper_left!=0)
+        if (eye_helper_left != 0 && eye_helper_right != 0)
         {
             painter.drawImage(QPoint(result.width()/2-rect_sep/2-rw/2,rh/6),*eye_helper_left);
             painter.drawImage(QPoint(result.width()/2+rect_sep/2-rw/2,rh/6),*eye_helper_right);
-
         }
         else
         {

@@ -4,7 +4,7 @@
 #include <OpenGL/gl.h>
 #include <qopenglext.h>
 #else
-#include "qgl.h"
+#include <qopengl.h>
 #endif
 #include <stdio.h>
 #include <math.h>

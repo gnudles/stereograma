@@ -85,15 +85,12 @@ void MainWindow::on_renderButton_clicked()
             depth_image.invertPixels();
         const QImage *eye_helper_left=0;
         const QImage *eye_helper_right=0;
-        bool show_helpers=false;
-        bool margin_helpers = false;
+        bool show_helpers = ui->show_helpers->isChecked();
+        bool margin_helpers = show_helpers && ui->margin_helpers->isChecked();
         QImage eye_helper_image_left=ui->helpers_image->getImage();
         QImage eye_helper_image_right;
-        if (ui->show_helpers->isChecked())
+        if (show_helpers)
         {
-            show_helpers=true;
-            margin_helpers = ui->margin_helpers->isChecked();
-            if (ui->show_helpers->isChecked())
             if(!eye_helper_image_left.isNull())
             {
                 if (ui->dual_helpers->isChecked())

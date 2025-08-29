@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network opengl widgets
+QT       += core gui network openglwidgets
 
 TARGET = stereograma
 TEMPLATE = app
@@ -14,6 +14,8 @@ win32:LIBS += -lGLU32 -lOpengl32
 win32:RC_FILE = icon_res.rc
 win32:QMAKE_CXXFLAGS += -Wa,-mbig-obj
 DEFINES+= USE_FLOAT
+#QMAKE_CXXFLAGS += -fsanitize=address
+#QMAKE_LFLAGS += -fsanitize=address
 
 SOURCES += main.cpp\
     ClickableLabel.cpp \
